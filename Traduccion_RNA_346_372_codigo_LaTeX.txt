@@ -1,0 +1,344 @@
+\documentclass[12pt]{article}
+\usepackage[spanish]{babel}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{mathptmx}
+\usepackage{amsmath,amssymb,graphicx,multirow,array}
+\usepackage{geometry,fancyhdr,ragged2e}
+\geometry{paperwidth=480pt,paperheight=675.45pt,left=52pt,right=42pt,top=55pt,bottom=38pt,headheight=13pt,headsep=19pt}
+\linespread{1.07}\setlength{\parindent}{16pt}\setlength{\parskip}{3pt}
+\pagestyle{fancy}\fancyhf{}
+\fancyhead[L]{\ifodd\value{page}\else\footnotesize\thepage\fi}
+\fancyhead[R]{\ifodd\value{page}\footnotesize\thepage\fi}
+\fancyhead[C]{\fontsize{7.5}{8}\selectfont\ifnum\value{page}<355 Análisis del desempeño de redes RBF y PMC\else\ifnum\value{page}<370 Optimización con restricciones mediante redes de Hopfield\else Redes neuronales artificiales para ingeniería y ciencias aplicadas\fi\fi}
+\renewcommand{\headrulewidth}{0pt}
+\newcommand{\subsec}[1]{\par\vspace{5pt}\noindent\textbf{#1}\par\vspace{2pt}}
+\newcommand{\eqn}[2]{\par\vspace{1pt}\noindent\begin{minipage}{\linewidth}\begin{equation*}\displaystyle #1\tag{#2}\end{equation*}\end{minipage}\par\vspace{1pt}}
+\newcommand{\fig}[2]{\par\begin{center}\includegraphics[width=.94\linewidth,keepaspectratio]{figuras/#1.png}\\[-1pt]{\fontsize{8}{9}\selectfont Figura #2}\end{center}\par}
+\newcommand{\figm}[2]{\par\begin{center}\includegraphics[width=.77\linewidth,keepaspectratio]{figuras/#1.png}\\[-1pt]{\fontsize{8}{9}\selectfont Figura #2}\end{center}\par}
+\newcommand{\bibentry}[1]{\par\noindent\hangindent=12pt\hangafter=1\fontsize{8.1}{9.6}\selectfont #1\par\normalsize}
+\begin{document}\justifying\setcounter{page}{346}
+% === PAGINA 346 ===
+\justifying
+\noindent porcentual también alcanzado por la segunda red PMC, que fue responsable de la clasificación de las cuatro variedades de tomates. Por lo tanto, esta opción de trabajar con dos redes neuronales artificiales en cascada fue la más eficiente.
+
+En resumen, una de las principales tareas asociadas con la presente aplicación consiste precisamente en el proceso de selección de las mejores variables que se presentarán a las redes, a fin de que puedan realizar la clasificación correcta de los tomates. La asociación de dos redes en cascada, con el propósito de dividir las tareas de clasificación, demostró ser la más eficiente desde el punto de vista computacional, obteniéndose aquí los mejores resultados en comparación con la utilización de una sola red neuronal más compleja.
+\clearpage
+
+% === PAGINA 347 ===
+\thispagestyle{empty}
+\noindent\hfill\small Capítulo 19\par
+\vspace{11pt}
+\begin{center}\Large\bfseries Análisis del desempeño de redes RBF y PMC en la clasificación de patrones\end{center}
+\vspace{34pt}
+\noindent\textbf{19.1 -- Introducción}
+
+Tanto las redes RBF como las redes PMC pueden emplearse como clasificadoras de patrones en situaciones en las que se tienen espacios de grandes dimensiones.
+
+Los análisis sobre qué tipos de redes producirían los mejores resultados, así como las orientaciones acerca de la topología más apropiada para alcanzar tales desempeños, son de gran utilidad para elegir la red más indicada para cada tipo de problema.
+
+Por otra parte, la capacidad de reconocimiento de patrones propia de los seres humanos proviene de la correlación de diversas informaciones recibidas por los órganos sensoriales. Ciertamente, los seres humanos son excelentes clasificadores de patrones y realizan estas tareas con un esfuerzo mínimo. De manera semejante, mediante el proceso de aprendizaje, las redes neuronales artificiales también consiguen asignar clases a través del procesamiento de señales de entrada.
+
+Además, cuando se presenta una nueva muestra, las redes extraen la información necesaria para realizar la clasificación, pues poseen cierta capacidad de generalización, adquirida mediante el aprendizaje a partir de ejemplos.
+\clearpage
+
+% === PAGINA 348 ===
+Las redes PMC, presentadas detalladamente en el capítulo 5, poseen una o más capas intermedias, y cada neurona se encuentra bajo la acción de una función de activación no lineal. El altísimo grado de conectividad entre sus neuronas es también una característica propia de este tipo de arquitectura neuronal.
+
+Por su parte, las redes RBF, descritas detalladamente en el capítulo 6, poseen típicamente una sola capa intermedia, y las activaciones utilizadas por sus neuronas son funciones de base radial. La capa de salida, a su vez, utiliza funciones lineales para producir la respuesta de la red ante las señales de entrada.
+
+Normalmente, las neuronas de las capas ocultas de una red PMC siguen un mismo modelo. En cambio, las neuronas de la capa oculta de una RBF siguen modelos diferentes y también cumplen propósitos distintos.
+
+\vspace{7pt}\noindent\textbf{19.2 -- Características de las redes RBF y PMC}
+
+Las señales de entrada utilizadas para comparar el desempeño de las redes PMC y RBF provienen de dos bases de datos públicas y conocidas: \emph{Wine} y \emph{Breast Cancer Wisconsin}.
+
+La base de datos \emph{Wine} se caracteriza por 14 atributos numéricos, de los cuales 13 son entradas y uno es una salida, y representan tres clases distintas de vino. Las frecuencias de estas clases se presentan en la tabla 19.1.
+
+\begin{center}\small Tabla 19.1 -- Distribución de muestras por clases (base de datos \emph{Wine})\par\vspace{5pt}
+\begin{tabular}{|>{\centering\arraybackslash}p{70pt}|>{\centering\arraybackslash}p{100pt}|}\hline\textbf{Clases}&\textbf{Frecuencia \%}\\\hline 1&33,14\\\hline 2&39,88\\\hline 3&26,27\\\hline\end{tabular}\end{center}
+
+La base de datos \emph{Wisconsin} también posee atributos numéricos: nueve entradas y una salida, procedentes de análisis de biopsias realizados a pacientes. Las muestras se clasifican como malignas o benignas, cuyas frecuencias se presentan en la tabla 19.2.
+\clearpage
+
+% === PAGINA 349 ===
+\begin{center}\small Tabla 19.2 -- Distribución de muestras entre clases (base de datos \emph{Wisconsin})\par\vspace{4pt}
+\begin{tabular}{|p{105pt}|c|}\hline\textbf{Clases}&\textbf{Frecuencia (\%)}\\\hline Benigno&65,0\\\hline Maligno&35,0\\\hline\end{tabular}\end{center}
+Es importante destacar que ambas bases de datos se han utilizado ampliamente en investigaciones que incluyen análisis comparativos entre métodos destinados a la clasificación de patrones.
+\subsec{19.3 -- Resultados computacionales}
+Con el fin de comparar el desempeño de diversas topologías, tanto PMC como RBF, se implementó el mismo número de neuronas en sus capas intermedias; para las redes PMC se probaron topologías con una única capa intermedia. Para la fase de entrenamiento se utilizó el 90\% de las muestras disponibles en las bases de datos, mientras que el 10\% restante se empleó durante la prueba.
+A partir del análisis de la figura 19.1 se observa que, considerando las muestras de la base \emph{Wine}, las redes PMC presentaron los mejores resultados durante la fase de entrenamiento en topologías con hasta dos neuronas en la capa intermedia, ya que las desviaciones durante los entrenamientos fueron menores para estas configuraciones.
+\fig{19_1}{19.1 -- Resultados de entrenamiento de las redes PMC (base de datos \emph{Wine}).}
+\clearpage
+
+% === PAGINA 350 ===
+Como se ilustra en la figura 19.2, se evaluaron topologías de redes PMC con la inclusión del término de \emph{momentum}, para verificar el número de épocas necesarias durante la convergencia.
+Se observa que los mejores resultados de entrenamiento, con valores de desviación reducidos, correspondieron a las topologías PMC constituidas por 1, 2 y 4 neuronas en sus capas intermedias.
+\figm{19_2}{19.2 -- Resultados del entrenamiento de redes PMC con \emph{momentum} (base de datos \emph{Wine}).}
+En la figura 19.3 se muestran los resultados correspondientes al entrenamiento de las redes PMC, considerando ahora la base de datos \emph{Wisconsin}.
+\figm{19_3}{19.3 -- Resultados del entrenamiento de las redes PMC (base de datos \emph{Wisconsin}).}
+Para la base de datos \emph{Wisconsin} también se implementaron redes PMC con el término de \emph{momentum}, cuyos resultados se encuentran en la figura 19.4.
+\clearpage
+
+% === PAGINA 351 ===
+\fig{19_4}{19.4 -- Resultados de entrenamiento de redes PMC con el término \emph{momentum} (base de datos \emph{Wisconsin}).}
+Para las topologías presentadas en la figura 19.4, y considerando los valores de las desviaciones, se observa que las configuraciones con 2 y 4 neuronas en la capa intermedia proporcionaron los mejores resultados. En la figura 19.5 se puede verificar el número medio de épocas que se necesitó para cada entrenamiento de la red PMC.
+\fig{19_5}{19.5 -- Número de épocas necesarias para entrenar las diferentes redes PMC.}
+Para las dos bases de datos investigadas se advierte una reducción sensible del número de épocas de entrenamiento al incluir el término \emph{momentum}. Las tasas de acierto obtenidas en las pruebas de las redes PMC se presentan en la tabla 19.3.
+\clearpage
+
+% === PAGINA 352 ===
+\begin{center}\scriptsize Tabla 19.3 -- Tasas de acierto obtenidas en las fases de prueba de las redes PMC\par\vspace{4pt}
+\begin{tabular}{|c|cc|cc|}\hline
+\multirow{2}{*}{\shortstack{Neuronas de\\capa intermedia}}&\multicolumn{2}{c|}{\emph{Wine} (\%)}&\multicolumn{2}{c|}{\emph{Wisconsin} (\%)}\\
+ &Sin \emph{momentum}&Con \emph{momentum}&Sin \emph{momentum}&Con \emph{momentum}\\\hline
+5&100,0&100,0&98,6&98,6\\
+4&100,0&100,0&98,6&98,6\\
+3&100,0&100,0&98,6&98,6\\
+2&83,3&81,5&98,6&98,6\\
+1&53,3&44,4&71,0&71,0\\\hline
+\end{tabular}\end{center}
+
+Sobre la base de los resultados presentados se puede afirmar que, considerando \emph{Wine}, la mejor topología de PMC tiene 3 neuronas en la capa intermedia y emplea el entrenamiento con \emph{momentum}. Respecto a la base \emph{Wisconsin}, también conviene emplear el término \emph{momentum} para acelerar el entrenamiento, obteniendo los mejores resultados con una topología de 2 neuronas intermedias. Estas topologías fueron elegidas en función de la complejidad de la red y de la eficiencia conseguida en las pruebas.
+En las figuras 19.6 a 19.8 se ilustran los resultados obtenidos por las redes RBF frente a las mismas bases \emph{Wine} y \emph{Wisconsin}.
+\fig{19_6}{19.6 -- Resultados del entrenamiento de las redes RBF (base \emph{Wine}).}
+\clearpage
+
+% === PAGINA 353 ===
+\fig{19_7}{19.7 -- Resultados del entrenamiento de redes RBF (base de datos \emph{Wisconsin}).}
+\fig{19_8}{19.8 -- Número de épocas necesarias para entrenar las distintas redes RBF.}
+Las tasas de acierto obtenidas durante las fases de prueba de las redes RBF pueden examinarse en la tabla 19.4.
+\clearpage
+
+% === PAGINA 354 ===
+\begingroup\fontsize{10.5}{11.5}\selectfont
+\begin{center}\small Tabla 19.4 -- Tasas de acierto obtenidas en las fases de prueba de las redes RBF\par\vspace{4pt}
+\begin{tabular}{|c|c|c|}\hline
+\shortstack{Neuronas de la\\capa intermedia}&\shortstack{Tasas de acierto (\%)\\\emph{Wine}}&\shortstack{Tasas de acierto (\%)\\\emph{Wisconsin}}\\\hline
+5&100,0&89,7\\4&94,4&91,3\\3&100,0&94,2\\2&88,9&95,7\\1&--&95,7\\\hline
+\end{tabular}\end{center}
+Analizando todos los resultados obtenidos por las redes RBF, es posible elegir la topología de 3 neuronas en la capa intermedia como la mejor clasificadora para la base de datos \emph{Wine}, mientras que la red constituida por una sola neurona sería la más apropiada para \emph{Wisconsin}.
+En resumen, los resultados enumerados en este análisis comparativo mostraron que ambas redes ensayadas tienen una capacidad de acierto muy similar. Este hecho ya se esperaba, pues tanto las redes PMC como las RBF son aproximadoras universales de funciones y, por tanto, siempre puede existir una RBF capaz de operar de manera semejante a una PMC específica.
+Sin embargo, se observó un comportamiento bastante diferente frente al proceso de entrenamiento, principalmente con la inclusión del término \emph{momentum} en las topologías PMC, lo que implicó una aceleración considerable de su convergencia.
+Por otro lado, la red RBF necesitó menos neuronas que la PMC cuando se aplicó a la clasificación de la base de datos \emph{Wisconsin}.
+El análisis comparativo también permitió confirmar que, según se investigó en la subsección 5.5.3, la topología con mejor desempeño durante el entrenamiento no siempre será aquella que proporcione también los mejores resultados en las pruebas. Esto puede observarse al comparar los resultados de la figura 19.1 con los presentados en la tabla 19.3.
+\endgroup
+\clearpage
+
+% === PAGINA 355 ===
+\thispagestyle{empty}\noindent\hfill\small Capítulo 20\par
+\vspace{13pt}\begin{center}\Large\bfseries Resolución de problemas de optimización con restricciones mediante redes de Hopfield\end{center}
+\vspace{34pt}\subsec{20.1 -- Introducción}
+Los problemas de optimización con restricciones se refieren, por lo general, a minimizar o maximizar una función objetivo sujeta a un conjunto de restricciones de igualdad o desigualdad, lineales o no lineales (Bazaraa y Shetty, 1979).
+Aunque la literatura contiene diversos métodos de programación matemática aplicables a la resolución de problemas de optimización con restricciones, existe una necesidad creciente de investigar métodos alternativos que aprovechen arquitecturas de procesamiento inherentemente paralelas y adaptativas. De esta manera, las redes neuronales artificiales constituyen un enfoque prometedor que puede aplicarse de forma eficiente a estos problemas. Entre las principales ventajas del uso de redes neuronales artificiales en la optimización no lineal restringida destacan la capacidad intrínseca de operación en paralelo, la sencillez de su implementación en hardware y la posibilidad de lograr tasas de cómputo elevadas mediante elementos de procesamiento simples.
+El problema que se aborda en este capítulo consiste en aplicar una red de Hopfield con el fin de minimizar una función de energía $E^{\mathrm{ot}}$, la cual representa la función objetivo del problema y está sujeta a diversas restricciones de igualdad y/o desigualdad. Todas esas restricciones se agrupan en un único
+\clearpage
+
+% === PAGINA 356 ===
+término de energía, denominado $E^{\mathrm{conf}}$, cuya finalidad es reunir todas las restricciones involucradas en el proceso de optimización. De este modo, los puntos de equilibrio de la red de Hopfield representan las posibles soluciones del problema de optimización.
+Como se vio en el capítulo 7, la expresión que rige el comportamiento en tiempo continuo de cada neurona de la red de Hopfield es:
+\eqn{\dot u_j(t)=-\eta u_j(t)+\sum_{i=1}^{n}W_{ji}v_j(t)+i_j^{b},\qquad j=1,\ldots,n}{20.1}
+\eqn{v_j(t)=g(u_j(t))}{20.2}
+donde $u_j(t)$ es el estado interno de la neurona $i$-ésima y $\dot u_j(t)=du_i/dt$; $v_j(t)$ es la salida de la neurona $i$-ésima; $W_{ji}$ es el peso sináptico de conexión de la neurona $j$-ésima con la $i$-ésima; $i_j^b$ es el umbral o estímulo aplicado a la neurona $i$-ésima; $g(\cdot)$ es una función de activación monótonamente creciente que limita la salida a un intervalo predefinido, y $-\eta u_j(t)$ es un término de decaimiento pasivo.
+Los puntos de equilibrio, como se presentó en la sección 7.3, corresponden a los valores de $v(t)$ que minimizan la función de energía asociada a la red de Hopfield:
+\eqn{E(t)=-\tfrac12 v^T(t)Wv(t)-v^T(t)i^b}{20.3}
+Por tanto, el planteamiento de problemas de optimización con una red de Hopfield consiste en determinar, para cada problema, la matriz de pesos $W$ y el vector de umbrales $i^b$ vinculados con la función de energía de la red, dada en (20.3).
+\clearpage
+
+% === PAGINA 357 ===
+En problemas de optimización con restricciones se utilizará una función de energía compuesta de dos términos:
+\eqn{E(t)=E^{\mathrm{ot}}(t)+E^{\mathrm{conf}}(t)}{20.4}
+En la que:
+\eqn{E^{\mathrm{ot}}(t)=-\tfrac12 v^T(t)W^{\mathrm{ot}}v(t)-v^T(t)i^{\mathrm{ot}}}{20.5}
+\eqn{E^{\mathrm{conf}}(t)=-\tfrac12 v^T(t)W^{\mathrm{conf}}v(t)-v^T(t)i^{\mathrm{conf}}}{20.6}
+De esta manera, la red de Hopfield actuará para minimizar simultáneamente una función de energía $E^{\mathrm{ot}}(t)$, correspondiente a la función objetivo, y otra función de energía $E^{\mathrm{conf}}(t)$, que representará todas las restricciones estructurales involucradas en el problema.
+\subsec{20.2 -- Características de la red de Hopfield}
+La topología de la red de Hopfield, integrada por dos términos de energía para resolver problemas de optimización con restricciones, se ilustra en la figura 20.1.
+\fig{20_1}{20.1 -- Red de Hopfield para la resolución de problemas de optimización con restricciones.}
+\clearpage
+
+% === PAGINA 358 ===
+Como se puede apreciar en la figura, la dinámica de funcionamiento de la red se describe mediante tres etapas principales:
+\textbf{I -- Minimización de $E^{\mathrm{conf}}$.} Corresponde a la proyección de $v$ sobre un subespacio válido que contiene todas las restricciones impuestas por el problema:
+\eqn{v(t+1)=W^{\mathrm{conf}}v(t)+i^{\mathrm{conf}}}{20.7}
+donde $W^{\mathrm{conf}}$ es una matriz de proyección, $W^{\mathrm{conf}}W^{\mathrm{conf}}=W^{\mathrm{conf}}$, e $i^{\mathrm{conf}}$ es ortogonal al subespacio válido. Un análisis detallado de esta técnica se presenta en Silva (1997) y Aiyer y colaboradores (1990).
+\textbf{II -- Aplicación de la función de activación.} Se emplea una función de tipo rampa simétrica, que restringe $v$ al interior de un hipercubo predefinido:
+\eqn{g(v_i)=\begin{cases}\mathrm{lim}^{\inf}_i,&v_i<\mathrm{lim}^{\inf}_i,\\ v_i,&\mathrm{lim}^{\inf}_i\le v_i\le\mathrm{lim}^{\sup}_i,\\ \mathrm{lim}^{\sup}_i,&v_i>\mathrm{lim}^{\sup}_i.\end{cases}}{20.8}
+Aquí, $v(t)$ pertenece al intervalo de límites inferiores y superiores. Aunque $v$ quede dentro de un conjunto particular, la red puede representar cualquier problema de optimización con restricciones; para límites no acotados se usan $-\infty$ y $+\infty$.
+\textbf{III -- Minimización de $E^{\mathrm{ot}}$.} Se modifica $v$ en dirección a una solución de costo óptimo, definida por $W^{\mathrm{ot}}$ e $i^{\mathrm{ot}}$, que corresponde a los puntos de equilibrio de la red. Con una activación de rampa simétrica y actualización síncrona de todas las neuronas, (20.1) toma la forma:
+\eqn{\frac{dv(t)}{dt}=-\nabla E^{\mathrm{ot}}(v)}{20.9}
+\eqn{\Delta v=-\Delta t\,\nabla E^{\mathrm{ot}}(v)=\Delta t\big(W^{\mathrm{ot}}v+i^{\mathrm{ot}}\big)}{20.10}
+\clearpage
+
+% === PAGINA 359 ===
+Así, la minimización de $E^{\mathrm{ot}}$ consiste en modificar $v$ en dirección contraria al gradiente de la función de energía respecto de $v$. Estos resultados también son válidos cuando se utiliza una función de activación tangente hiperbólica.
+Cabe resaltar que las etapas I a III se ejecutan discretamente. Tras las consideraciones de la etapa III, la solución de la ecuación diferencial representada en (20.9) será similar al método de Euler (Franco, 2006), lo que en términos de optimización representa un descenso por gradiente con paso fijo $\Delta t$.
+En síntesis, después de cada etapa de optimización III se deben ejecutar iterativamente las dos etapas siguientes, I y II, hasta lograr la convergencia del vector de salida $v$ y garantizar el cumplimiento de todas las restricciones involucradas en el problema.
+Por tanto, según la figura 20.1, cada iteración contiene dos fases claramente diferenciadas. En la primera fase, descrita en la etapa III, el vector $v$ se modifica utilizando solamente el gradiente del término $E^{\mathrm{ot}}$. En la segunda, después de la modificación producida en III, $v$ se proyecta sobre el subespacio válido (etapa I), que contiene las restricciones del problema, y después se limita mediante la función de activación (etapa II), para que sus componentes permanezcan dentro del dominio admisible.
+Finalmente, la convergencia concluye cuando los valores del vector $v$ durante dos iteraciones consecutivas permanecen prácticamente constantes, de modo que el nuevo valor de $v$ coincide con su valor anterior.
+\subsec{20.3 -- Formulación de problemas de optimización mediante la red de Hopfield}
+Se considera el siguiente problema de optimización, que consta de $p$ restricciones de desigualdad y $N$ variables:
+\eqn{\text{Minimizar}\quad E^{\mathrm{ot}}(v)=f(v)}{20.11}
+\eqn{\text{Sujeto a}\quad h_i(v)\le0,\quad i=1,\ldots,p}{20.12}
+\eqn{v^{\inf}\le v\le v^{\sup}}{20.13}
+\clearpage
+
+% === PAGINA 360 ===
+Los vectores $v$, $v^{\inf}$ y $v^{\sup}$ pertenecen a $\mathbb R^N$, mientras que $f(v)$ y $h_i(v)$ son funciones continuas y diferenciables. Los vectores $v^{\inf}$ y $v^{\sup}$ establecen los límites inferiores y superiores de cada componente de $v$. Las condiciones (20.12) y (20.13) definen un conjunto cerrado y convexo en $\mathbb R^N$, dentro del cual debe permanecer $v$ para representar una solución válida del problema gobernado por (20.11).
+La solución puede obtenerse mediante una red de Hopfield, cuya implementación del subespacio válido garantiza que se satisfagan las condiciones de (20.12). Asimismo, el hipercubo inicial representado por las restricciones de desigualdad para variables acotadas, dadas en (20.13), se representa directamente mediante la función rampa simétrica de (20.8), empleada como activación neuronal, es decir, $v\in[v^{\inf},v^{\sup}]$.
+Los parámetros $W^{\mathrm{conf}}$ e $i^{\mathrm{conf}}$ del subespacio válido se calculan transformando las restricciones de desigualdad de (20.12) en un conjunto de restricciones de igualdad mediante la introducción de una variable auxiliar por cada restricción:
+\eqn{h_i(v)+\sum_{j=1}^p\delta_{ij}q_j^2=0,\qquad i=1,\ldots,p}{20.14}
+donde $q_j\ge0$ son las variables auxiliares, que pueden tratarse como componentes adicionales de $v$, y $\delta_{ij}$ es la delta de Kronecker (Graham, 1986):
+\eqn{\delta_{ij}=\begin{cases}1,&i=j,\\0,&i\neq j.\end{cases}}{20.15}
+Después de la transformación, las ecuaciones (20.11), (20.12) y (20.13), que definen el problema de optimización, pueden volver a escribirse como:
+\eqn{\text{Minimizar}\quad E^{\mathrm{ot}}(v^+)=f(v^+)}{20.16}
+\clearpage
+
+% === PAGINA 361 ===
+\eqn{\text{Sujeto a}\quad h_i(v^+)\le0,\qquad i=1,\ldots,p}{20.17}
+\eqn{v_i^{\inf}\le v_i\le v_i^{\sup},\quad i=1,\ldots,N}{20.18}
+\eqn{0\le v_i\le v_i^{\sup},\quad i=N+1,\ldots,N^+}{20.19}
+donde $N^+=N+p$ y $v^+=[v^T,q^T]^T\in\mathbb R^{N+p}$ es el vector de variables extendidas. Debe observarse que $E^{\mathrm{ot}}$ no depende de las variables auxiliares $q$.
+La matriz de proyección $W^{\mathrm{conf}}$, correspondiente a la ecuación del subespacio válido, se calcula proyectando $v^+$, obtenido mediante la minimización de $E^{\mathrm{ot}}(v^+)=f(v^+)$, sobre el subespacio tangente a la superficie delimitada por las restricciones de (20.17). De esta forma, según Luenberger (2003):
+\eqn{W^{\mathrm{conf}}=I-\nabla h(v^+)^T\left[\nabla h(v^+)\nabla h(v^+)^T\right]^{-1}\nabla h(v^+)}{20.20}
+En esta expresión, $\nabla h(v^+)$ es la matriz jacobiana de las restricciones, cuyas componentes son las derivadas parciales de $h_i$ respecto de las variables del vector extendido:
+\eqn{\nabla h(v^+)=\begin{bmatrix}\frac{\partial h_1}{\partial v_1}&\cdots&\frac{\partial h_1}{\partial v_{N^+}}\\\vdots&\ddots&\vdots\\\frac{\partial h_p}{\partial v_1}&\cdots&\frac{\partial h_p}{\partial v_{N^+}}\end{bmatrix}}{20.21}
+Sustituyendo (20.20) en la ecuación del subespacio válido de (20.7), se obtiene:
+\eqn{v^{+}\leftarrow\big[I-\nabla h(v^{+})^T\big(\nabla h(v^{+})\nabla h(v^{+})^T\big)^{-1}\nabla h(v^{+})\big]v^{+}+i^{\mathrm{conf}}}{20.22}
+Por último, se incorporan resultados de la teoría de estabilidad de Lyapunov (Vidyasagar, 2002) a la ecuación (20.22), con la finalidad de asegurar la estabilidad del sistema no lineal.
+\clearpage
+
+% === PAGINA 362 ===
+Así se fuerza la convergencia de la red hacia los puntos de equilibrio que representan una solución del problema. Por definición de la matriz jacobiana, cuando $v$ tiende al punto de equilibrio su variación se anula. En esta situación, el desplazamiento también debe ser nulo:
+\eqn{v^e=v(t)=v(t+\Delta t)=0}{20.23}
+Por tanto, la ecuación (20.17) puede aproximarse mediante su expansión de primer orden:
+\eqn{h(v^+)\simeq h(v^e)+J\big(v^+-v^e\big)}{20.24}
+donde $J=\nabla h(v^+)$ es la jacobiana y $h(v)=[h_1(v),\ldots,h_p(v)]^T$.
+En las proximidades del punto de equilibrio, en el cual la variación puede considerarse nula, se verifica la relación:
+\eqn{\lim_{v^+\to v^e}\frac{\lVert h(v^+)\rVert}{\lVert v^+\rVert}=0}{20.25}
+Al introducir los resultados de (20.24) y (20.25) en (20.22), se obtiene una expresión del subespacio válido basada en la matriz jacobiana:
+\eqn{v^+\leftarrow v^+-\nabla h(v^+)^T\big(\nabla h(v^+)\nabla h(v^+)^T\big)^{-1}h(v^+)}{20.26}
+La ecuación (20.26) sintetiza la expresión del subespacio válido para el tratamiento de sistemas de ecuaciones no lineales. En consecuencia, para los problemas de optimización con restricciones, la expresión original del subespacio válido en (20.7), que constituye la etapa I de la figura 20.1, debe reemplazarse por (20.26).
+De acuerdo con la figura 20.1, la aplicación sucesiva de la etapa I, seguida de la etapa II, hace que $v$ converja hacia un punto de equilibrio que cumpla todas las restricciones impuestas por el problema de optimización no lineal.
+\clearpage
+
+% === PAGINA 363 ===
+Los parámetros $W^{\mathrm{ot}}$ e $i^{\mathrm{ot}}$, asociados al término de energía $E^{\mathrm{ot}}$ dado en (20.5) y representado en (20.16), se definen de tal forma que la solución óptima corresponda a la minimización de $E^{\mathrm{ot}}$. Para ello, se modifica el vector $v^+$ en dirección contraria al gradiente de la función de energía. Como (20.17) y (20.18) definen un poliedro acotado, la función objetivo de (20.16) tiene un punto mínimo. Así, los puntos de equilibrio pueden calcularse adoptando los siguientes valores:
+\eqn{i^{\mathrm{ot}}=-\nabla f(v^+)}{20.27}
+\eqn{T^{\mathrm{ot}}=0}{20.28}
+Como se mencionó anteriormente, dado que $v^+=[v^T,q^T]^T$, el vector $i^{\mathrm{ot}}$ indicado en (20.27) se representa mediante las derivadas parciales de la función objetivo respecto de todas las variables extendidas:
+\eqn{i^{\mathrm{ot}}=-\left[\frac{\partial f}{\partial v_1},\ldots,\frac{\partial f}{\partial v_N},\frac{\partial f}{\partial q_1},\ldots,\frac{\partial f}{\partial q_p}\right]^T}{20.29}
+Dado que el proceso de optimización de $E^{\mathrm{ot}}$ no depende de los valores de las variables auxiliares $q$, la expresión de (20.29) puede reemplazarse por:
+\eqn{i^{\mathrm{ot}}=-\left[\frac{\partial f}{\partial v_1},\ldots,\frac{\partial f}{\partial v_N},0,\ldots,0\right]^T}{20.30}
+Para ilustrar el desempeño de la red neuronal propuesta, en la siguiente sección se presentan algunos resultados de simulación.
+\clearpage
+
+% === PAGINA 364 ===
+\subsec{20.4 -- Resultados computacionales}
+En el primer problema, según la propuesta de Bazaraa y Shetty (1979), la función objetivo está sujeta únicamente a restricciones de desigualdad:
+\[\text{Minimizar}\quad f(v)=e^{v_1}+v_1^2+4v_1+2v_2^2-6v_2+2v_3\]
+\[\text{Sujeto a}\quad\left\{\begin{aligned}
+v_1^2+e^{v_2}+6v_3&\le15 &&(\mathrm{R1})\\
+v_1^4-v_2+5v_3&\le25 &&(\mathrm{R2})\\
+v_1^3+v_2^2-v_3&\le10 &&(\mathrm{R3})\\
+0\le v_1&\le4 &&(\mathrm{R4})\\
+0\le v_2&\le2 &&(\mathrm{R5})\\
+v_3&\ge0 &&(\mathrm{R6})
+\end{aligned}\right.\]
+Para esta optimización con tres restricciones de desigualdad y variables acotadas, el vector solución (punto de equilibrio) obtenido después de la convergencia de la red de Hopfield es $v=[0{,}00001\;1{,}50002\;0{,}00000]^T$, con función objetivo $f(v)=-3{,}49999$. Este resultado es muy próximo a la solución óptima, dada por $v^*=[0{,}0\;1{,}5\;0{,}0]^T$ y $f(v^*)=-3{,}5$. La figura 20.2 ilustra la evolución de $v_1$, $v_2$ y $v_3$ obtenida por la red de Hopfield en relación con el número de iteraciones.
+\clearpage
+
+% === PAGINA 365 ===
+\fig{20_2}{20.2 -- Evolución del vector de salida de la red (primer problema).}
+La trayectoria de la función objetivo se muestra en la figura 20.3. Cabe destacar que las restricciones (R4), (R5) y (R6) se tratan directamente mediante la función de activación de la red, definida en (20.8).
+\fig{20_3}{20.3 -- Evolución de la función objetivo (primer problema).}
+\clearpage
+
+% === PAGINA 366 ===
+El segundo problema tratado por la red de Hopfield está constituido por restricciones de igualdad y desigualdad, y se define mediante las expresiones siguientes:
+\[\text{Minimizar}\quad f(v)=v_1^3+2v_2^2v_3+2v_3\]
+\[\text{Sujeto a}\quad\left\{\begin{aligned}
+v_1^2+v_2+v_3^2&=4,\\
+v_1^2-v_2+2v_3&\le2,\\
+v_1,v_2,v_3&\ge0.
+\end{aligned}\right.\]
+En relación con este problema, la figura 20.4 presenta la evolución de los valores de $v_1$, $v_2$ y $v_3$ en función del número de iteraciones. El vector solución, obtenido después de la convergencia de la red, es $v=[0{,}00000\;4{,}00000\;0{,}00001]^T$; el valor final de la función objetivo es $f(v)=E^{\mathrm{ot}}(v)=0{,}00034$. La solución óptima se expresa como $v^*=[0{,}0\;4{,}0\;0{,}0]^T$, con $E^{\mathrm{ot}}(v^*)=0{,}0$.
+\fig{20_4}{20.4 -- Evolución del vector de salida de la red (segundo problema).}
+\clearpage
+
+% === PAGINA 367 ===
+La figura 20.5 ilustra el comportamiento de la función objetivo del problema con respecto al número de iteraciones. Los valores iniciales asignados al vector $v$ se generaron aleatoriamente entre cero y uno.
+\fig{20_5}{20.5 -- Evolución de la función objetivo (segundo problema).}
+El tercer y último problema pretende confirmar la aplicabilidad de la red propuesta cuando todas las restricciones asociadas al problema son lineales:
+\[\text{Minimizar}\quad f(v)=0{,}4v_2+v_1^2+v_2^2-v_1v_2+\tfrac1{30}v_1^3\]
+\[\text{Sujeto a}\quad\left\{\begin{aligned}
+v_1+0{,}5v_2&\ge0{,}4,\\
+0{,}5v_1+v_2&\ge0{,}5,\\
+v_1,v_2&\ge0.
+\end{aligned}\right.\]
+La figura 20.6 presenta la evolución de los componentes del vector de salida de la red frente al número de iteraciones. Después de la convergencia, la solución obtenida es $v=[0{,}3398\;0{,}3301]^T$, con $E^{\mathrm{ot}}(v)=0{,}2456$. Estos resultados se aproximan mucho a los valores exactos, $v^*=[0{,}3395\;0{,}3302]^T$, y al valor de la función objetivo $E^{\mathrm{ot}}(v^*)=0{,}2455$.
+\clearpage
+
+% === PAGINA 368 ===
+\figm{20_6}{20.6 -- Evolución del vector de salida de la red (tercer problema).}
+La figura 20.7 muestra la evolución de la función objetivo del problema en relación con el número de iteraciones. En este caso, la red se inició con valores aleatorios distribuidos uniformemente entre cero y uno.
+\figm{20_7}{20.7 -- Evolución de la función objetivo (tercer problema).}
+Estos resultados muestran la aplicación efectiva de la red de Hopfield para resolver problemas de optimización no lineal con restricciones. La red también se simuló considerando distintos valores iniciales del vector de salida $v$.
+\clearpage
+
+% === PAGINA 369 ===
+\begingroup\fontsize{10.5}{11.5}\selectfont
+En todas las simulaciones, la red convergió siempre hacia las mismas soluciones.
+Aunque el número de iteraciones es relativamente elevado, el tiempo necesario para obtener las soluciones ha sido bastante corto. A este respecto, cabe destacar que, aunque se utilizaron computadoras secuenciales en las simulaciones, la red alcanzará su máxima eficiencia cuando se ejecute en máquinas cuyos procesadores funcionen en paralelo, ya que cada unidad de procesamiento equivaldría a una unidad neuronal.
+Otro aspecto relevante es la calidad de las soluciones obtenidas por la red. Aunque los valores de las soluciones presentan algunas desviaciones con respecto a los valores óptimos, estas resultan menores al compararlas con las de otros enfoques neuronales aplicados a esta clase de problemas.
+También conviene señalar que algunos ensayos realizados con problemas de mayores dimensiones, con alrededor de 800 restricciones de desigualdad, demostraron que la red puede volverse lenta en su búsqueda de los puntos de equilibrio que representan la solución del sistema. Este comportamiento se debe a que toda la simulación se ejecutó en computadoras secuenciales. El empleo de máquinas con procesadores paralelos, como se mencionó, podría superar esta limitación.
+Finalmente, el tratamiento de problemas de optimización no lineal con restricciones mediante una red de Hopfield presenta ciertas particularidades frente a los métodos primales (Bazaraa y colaboradores, 2006), también utilizados para resolver tales problemas. Entre ellas destacan que no es necesario calcular el conjunto activo de restricciones en cada iteración; que el vector inicial de la red (solución inicial) no requiere pertenecer al conjunto factible definido por las restricciones; que no es preciso obtener una dirección admisible de búsqueda en cada iteración; y que el mecanismo de búsqueda no depende del uso de multiplicadores de Lagrange.
+\begin{center}\includegraphics[width=92pt]{figuras/kronecker.png}\\[-1pt]{\footnotesize Leopold Kronecker}\end{center}
+\endgroup
+\clearpage
+
+% === PAGINA 370 ===
+\thispagestyle{empty}\ \vfill\null
+\clearpage
+
+% === PAGINA 371 ===
+\thispagestyle{empty}
+\vspace*{30pt}\begin{flushright}{\LARGE\bfseries Bibliografía}\end{flushright}
+\rule{\linewidth}{0.3pt}\vspace{42pt}
+\bibentry{Aguirre, L. A. (2000). \emph{Introdução à identificação de sistemas -- técnicas lineares e não-lineares aplicadas a sistemas reais}. Editora UFMG, Belo Horizonte.}
+\bibentry{Aihara, K., Takabe, T. y Toyoda, M. (1990). \emph{Chaotic neural networks}. Physics Letters A, vol. 144, pp. 333--340.}
+\bibentry{Aiyer, S. V. B., Niranjan, M. y Fallside, F. (1990). \emph{A theoretical investigation into the performance of the Hopfield model}. IEEE Transactions on Neural Networks, vol. 1, n.º 2, pp. 204--215.}
+\bibentry{Alligood, K. T., Sauer, T. D. y Yorke, J. A. (2000). \emph{Chaos: An Introduction to Dynamical Systems}. Springer-Verlag, Nueva York, EE. UU.}
+\bibentry{Amit, D. J. (1992). \emph{Modeling Brain Function: The World of Attractor Neural Networks}. Cambridge University Press, Cambridge, Reino Unido.}
+\bibentry{Amit, D. J., Gutfreund, H. y Sompolinsky, H. (1985). \emph{Spin-glass models of neural networks}. Physical Review A, vol. 32, pp. 1007--1018.}
+\bibentry{Atencia, M., Joya, G. y Sandoval, F. (2005). \emph{Dynamical analysis of continuous higher-order Hopfield networks for combinatorial optimization}. Neural Computation, vol. 17, pp. 1802--1819.}
+\bibentry{Aurenhammer, F. (1991). \emph{Voronoi diagrams: a survey of a fundamental geometric data structure}. ACM Computing Surveys, vol. 23, n.º 3, pp. 345--405.}
+\bibentry{Baraldi, A. y Alpaydin, E. (2002). \emph{Constructive feedforward ART clustering networks}. IEEE Transactions on Neural Networks, vol. 13, n.º 3, pp. 645--661.}
+\bibentry{Battiti, R. (1992). \emph{First and second order methods for learning: between steepest descent and Newton's method}. Neural Computation, vol. 4, n.º 2, pp. 141--166.}
+\bibentry{Bazaraa, M. S., Sherali, H. D. y Shetty, C. M. (2006). \emph{Nonlinear Programming: Theory and Algorithms}. John Wiley \& Sons, 3.ª ed., Hoboken, Nueva Jersey.}
+\bibentry{Bazaraa, M. S. y Shetty, C. M. (1979). \emph{Nonlinear Programming}. John Wiley \& Sons, Nueva York.}
+\clearpage
+
+% === PAGINA 372 ===
+\bibentry{Beiu, V., Quintana, J. M. y Avedillo, M. J. (2003). \emph{VLSI implementations of threshold logic: a comprehensive survey}. IEEE Transactions on Neural Networks, vol. 14, n.º 5, pp. 1217--1243.}
+\bibentry{Bertsekas, D. P. y Tsitsiklis, J. N. (1996). \emph{Neuro-Dynamic Programming}. Athena Scientific, Belmont, Massachusetts.}
+\bibentry{Bowyer, A. (1981). \emph{Computing Dirichlet tessellations}. The Computer Journal, vol. 24, n.º 2, pp. 162--166.}
+\bibentry{Boylestad, R. y Nashelsky, L. (2004). \emph{Dispositivos eletrônicos e teoria de circuitos}. Prentice-Hall, 8.ª ed., São Paulo.}
+\bibentry{Buckley, J. J. y Siler, W. (2004). \emph{Fuzzy Expert Systems and Fuzzy Reasoning}. John Wiley, Nueva York.}
+\bibentry{Carpenter, G. A. y Grossberg, S. (1987a). \emph{A massively parallel architecture for a self-organizing neural pattern recognition machine}. Computer Vision, Graphics, and Image Processing, vol. 37, n.º 1, pp. 54--115.}
+\bibentry{Carpenter, G. A. y Grossberg, S. (1987b). \emph{ART 2: self-organization of stable category recognition codes for analog input patterns}. Applied Optics, vol. 26, n.º 23, pp. 4919--4930.}
+\bibentry{Carpenter, G. A. y Grossberg, S. (1988). \emph{The ART of adaptive pattern recognition by a self-organizing neural network}. IEEE Computer, vol. 21, n.º 3, pp. 77--88.}
+\bibentry{Carpenter, G. A. y Grossberg, S. (1990). \emph{ART 3: hierarchical search using chemical transmitters in self-organizing pattern recognition architectures}. Neural Networks, vol. 3, n.º 2, pp. 129--152.}
+\bibentry{Carpenter, G. A., Grossberg, S. y Reynolds, J. H. (1991a). \emph{ARTMAP: supervised real-time learning and classification of nonstationary data by a self-organizing neural network}. Neural Networks, vol. 4, n.º 5, pp. 565--588.}
+\bibentry{Carpenter, G. A., Grossberg, S. y Rosen, D. B. (1991b). \emph{Fuzzy ART: fast stable learning and categorization of analog patterns by an adaptive resonance system}. Neural Networks, vol. 4, n.º 6, pp. 759--771.}
+\bibentry{Castro, L. N. y Timmis, J. (2002). \emph{Artificial Immune Systems: A New Computational Intelligence Approach}. Springer-Verlag, Londres.}
+\bibentry{Chang, C. Y. y Su, S. (2005). \emph{The application of a full counter-propagation neural network to image watermarking}. IEEE International Conference on Networking, Sensing and Control, pp. 993--998.}
+\bibentry{Chen, S. (1995). \emph{Nonlinear time series modeling and prediction using Gaussian RBF networks with enhanced clustering and RLS learning}. Electronics Letters, vol. 31, n.º 2, pp. 117--118.}
+\bibentry{Chen, S., Cowan, C. F. N. y Grant, P. M. (1991). \emph{Orthogonal least squares learning algorithm for radial basis function networks}. IEEE Transactions on Neural Networks, vol. 2, n.º 2, pp. 302--309.}
+\bibentry{Cho, J., Principe, J. C., Erdogmus, D. y Motter, M. A. (2006). \emph{Modeling and inverse controller design for an unmanned aerial vehicle based on the self-organizing map}. IEEE Transactions on Neural Networks, vol. 17, n.º 2, pp. 445--460.}
+\bibentry{Cho, K. C., Ma, Y. B. y Lee, J. S. (2006). \emph{Design of computational grid-based intelligence ART-1 classification system for bioinformatics applications}. Proceedings of the 5th International Conference on Grid and Cooperative Computing Workshops, pp. 367--370.}
+\bibentry{Coakley, J. R. y Brown, C. E. (2000). \emph{Artificial neural networks in accounting and finance: modeling issues}. International Journal of Intelligent Systems in Accounting, Finance \& Management, vol. 9, n.º 2, pp. 119--144.}
+\bibentry{Curry, B. y Morgan, P. H. (2006). \emph{Model selection in neural networks: some difficulties}. European Journal of Operational Research, vol. 170, n.º 2, pp. 567--577.}
+\bibentry{Cybenko, G. V. (1989). \emph{Approximation by superpositions of a sigmoidal function}. Mathematics of Control, Signals and Systems, vol. 2, n.º 4, pp. 303--314.}
+\clearpage
+\end{document}
